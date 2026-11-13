@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "download_bytes": 4960719513,
+  "disk_bytes": 4960719513,
+  "gate": null,
+  "g2p": {},
+  "notes_internal": "Language list partial: confirm full 30 codes against the card before release (Hindi confirmed).",
+  "id": "voxcpm2",
+  "display_name": "VoxCPM2",
+  "engine": {
+    "kind": "python",
+    "family": "voxcpm",
+    "entry": "voxcpm2",
+    "python": "3.12",
+    "lock": "voxcpm"
+  },
+  "artifacts": [
+    {
+      "source": "huggingface",
+      "repo": "openbmb/VoxCPM2",
+      "revision": "7936080b41163874f38610f46f438e2c0757f9fd",
+      "gated": false,
+      "files": [
+        {
+          "path": "audiovae.pth",
+          "size": 376951122,
+          "sha256": "94b5d51e107e0507d4acc976cfdadb64edd6fd06d1f751dadbf2fd1594274bf1"
+        },
+        {
+          "path": "config.json",
+          "size": 4336,
+          "sha256": null
+        },
+        {
+          "path": "model.safetensors",
+          "size": 4580080592,
+          "sha256": "f7f964cfa9da23653baec6e6f7750719977ad944ed9f95fe52fe3a620506891d"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "size": 1632,
+          "sha256": null
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 3676772,
+          "sha256": null
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 5059,
+          "sha256": null
+        }
+      ]
+    }
+  ],
+  "license": {
+    "id": "Apache-2.0",
+    "url": "https://huggingface.co/openbmb/VoxCPM2",
+    "commercial": true,
+    "attribution": "VoxCPM2 by OpenBMB (Apache-2.0)",
+    "accept_required": false,
+    "personal_use": false,
+    "usage_policy": "Impersonation, fraud and disinformation are strictly forbidden by the model authors."
+  },
+  "capabilities": {
+    "clone": true,
+    "clone_ref_seconds": {
+      "min": 3,
+      "ideal": 10,
+      "max": 30
+    },
+    "clone_needs_transcript": false,
+    "voice_design": true,
+    "emotion": null,
+    "tags": [],
+    "speed": false,
+    "delivery": [],
+    "streaming": "native",
+    "max_chunk_chars": 400,
+    "builtin_watermark": null
+  },
+  "languages": [
+    "ar",
+    "da",
+    "de",
+    "el",
+    "en",
+    "es",
+    "fi",
+    "fr",
+    "he",
+    "hi",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "ms",
+    "nl",
+    "no",
+    "pl",
+    "pt",
+    "ru",
+    "sv",
+    "sw",
+    "th",
+    "tr",
+    "vi",
+    "zh"
+  ],
+  "sample_rate": 48000,
+  "hardware": {
+    "devices": [
+      "cuda",
+      "mps"
+    ],
+    "min_ram_gb": 16,
+    "min_vram_gb": 8,
+    "os": [
+      "windows-x64",
+      "linux-x64",
+      "macos-arm64"
+    ],
+    "macos_min": "14.0",
+    "realtime_hint": {}
+  },
+  "tier": "advanced"
+}

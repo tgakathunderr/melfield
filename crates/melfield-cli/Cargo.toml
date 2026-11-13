@@ -1,0 +1,17 @@
+[package]
+name = "melfield-cli"
+description = "melfield pull | list | say | serve"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "melfield"
+path = "src/main.rs"
+
+[dependencies]
+melfield-core = { path = "../melfield-core" }
+melfield-api = { path = "../melfield-api" }
+clap = { version = "4", features = ["derive"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

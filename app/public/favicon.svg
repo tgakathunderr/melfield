@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="melfield">
+  <rect width="96" height="96" rx="22" fill="#0A0A0C"/>
+  <g transform="translate(18 18) scale(3.333)">
+    <circle cx="3" cy="11" r="1.6" fill="#FF6A2B"/>
+    <circle cx="7" cy="7" r="1.6" fill="#E0389A"/>
+    <circle cx="7" cy="11" r="1.6" fill="#FF6A2B"/>
+    <circle cx="11" cy="3" r="1.6" fill="#6B4BD8"/>
+    <circle cx="11" cy="7" r="1.6" fill="#E0389A"/>
+    <circle cx="11" cy="11" r="1.6" fill="#FF6A2B"/>
+    <circle cx="15" cy="7" r="1.6" fill="#E0389A"/>
+    <circle cx="15" cy="11" r="1.6" fill="#FF6A2B"/>
+    <circle cx="11" cy="15" r="1.6" fill="#FF6A2B"/>
+  </g>
+</svg>

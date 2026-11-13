@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "download_bytes": 142404640,
+  "disk_bytes": 142404640,
+  "gate": null,
+  "g2p": {
+    "en": "misaki-rs+melfield-oov"
+  },
+  "notes_internal": "Hindi/es/fr/it/pt Kokoro voices need espeak-ng G2P (GPL); not enabled (espeak-ng is GPL-3.0).",
+  "id": "kokoro-82m",
+  "display_name": "Kokoro 82M (int8)",
+  "engine": {
+    "kind": "native",
+    "runtime": "sherpa-onnx",
+    "model_type": "kokoro"
+  },
+  "artifacts": [
+    {
+      "source": "huggingface",
+      "repo": "csukuangfj/kokoro-int8-multi-lang-v1_0",
+      "revision": "57adb37fc0e8d4bd430cfc1b8f8c2294945b9af2",
+      "gated": false,
+      "files": [
+        {
+          "path": "model.int8.onnx",
+          "size": 114202993,
+          "sha256": "75635ea3b85a32d00094dcdd61a258aba87c160f7c264c304a7b3ae9d734195e"
+        },
+        {
+          "path": "voices.bin",
+          "size": 28200960,
+          "sha256": "1c5a5b983d3d50d8586d437a51f3faa2da7919ce76a013c081e65671a3447c29"
+        },
+        {
+          "path": "tokens.txt",
+          "size": 687,
+          "sha256": "6ebb6bb288f20f3ae8d004d3c2ca27697da27c037d75e81a60e2a6a663f95425"
+        }
+      ]
+    }
+  ],
+  "license": {
+    "id": "Apache-2.0",
+    "url": "https://huggingface.co/hexgrad/Kokoro-82M",
+    "commercial": true,
+    "attribution": "Kokoro-82M by hexgrad (Apache-2.0); ONNX packaging by k2-fsa/sherpa-onnx (Apache-2.0). Training data includes CC BY corpora (Koniwa, SIWIS).",
+    "accept_required": false,
+    "personal_use": false,
+    "usage_policy": null
+  },
+  "capabilities": {
+    "clone": false,
+    "clone_ref_seconds": {
+      "min": 0,
+      "ideal": 0,
+      "max": 0
+    },
+    "clone_needs_transcript": false,
+    "voice_design": false,
+    "emotion": null,
+    "tags": [],
+    "speed": true,
+    "delivery": [],
+    "streaming": "chunk",
+    "max_chunk_chars": 260,
+    "builtin_watermark": null
+  },
+  "languages": [
+    "en"
+  ],
+  "sample_rate": 24000,
+  "hardware": {
+    "devices": [
+      "cpu"
+    ],
+    "min_ram_gb": 2,
+    "min_vram_gb": null,
+    "os": [
+      "windows-x64",
+      "macos-arm64",
+      "macos-x64",
+      "linux-x64"
+    ],
+    "macos_min": null,
+    "realtime_hint": {}
+  },
+  "tier": "starter"
+}

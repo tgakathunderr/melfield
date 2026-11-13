@@ -1,0 +1,7 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.8.0
+torchaudio==2.8.0
+voxcpm==2.0.3
+resemble-perth==1.0.1
+setuptools<81  # perth imports pkg_resources
+librosa>=0.10  # perth imports it without declaring it

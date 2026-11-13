@@ -1,0 +1,86 @@
+name: release
+
+# Signed, notarized installers + updater manifest. Triggered by a version tag.
+# Required repository secrets:
+#   TAURI_SIGNING_PRIVATE_KEY, TAURI_SIGNING_PRIVATE_KEY_PASSWORD   — updater signatures
+#   APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD, APPLE_SIGNING_IDENTITY,
+#   APPLE_API_ISSUER, APPLE_API_KEY, APPLE_API_KEY_P8                  — Developer ID + notarization
+#   AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET,
+#   AZURE_SIGNING_ENDPOINT, AZURE_SIGNING_ACCOUNT, AZURE_SIGNING_PROFILE — Windows Artifact Signing
+#   APPIMAGE_GPG_KEY, APPIMAGE_GPG_PASSPHRASE                         — AppImage signature
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            args: ""
+          - os: macos-latest
+            args: "--target aarch64-apple-darwin"
+          - os: macos-13
+            args: "--target x86_64-apple-darwin"
+          - os: ubuntu-22.04
+            args: ""
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: linux deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev libssl-dev libsecret-1-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: fetch uv sidecar
+        shell: bash
+        run: scripts/fetch_uv.sh
+      - name: install ui deps
+        working-directory: app
+        run: npm ci
+      - name: windows signing tool
+        if: runner.os == 'Windows'
+        run: cargo install artifact-signing-cli --locked
+      - name: apple api key file
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          mkdir -p ~/private_keys
+          echo "${{ secrets.APPLE_API_KEY_P8 }}" > ~/private_keys/AuthKey_${{ secrets.APPLE_API_KEY }}.p8
+          echo "APPLE_API_KEY_PATH=$HOME/private_keys/AuthKey_${{ secrets.APPLE_API_KEY }}.p8" >> $GITHUB_ENV
+      - uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          SIGN: ${{ runner.os == 'Linux' && '1' || '' }}
+          SIGN_KEY: ${{ secrets.APPIMAGE_GPG_KEY }}
+          APPIMAGETOOL_SIGN_PASSPHRASE: ${{ secrets.APPIMAGE_GPG_PASSPHRASE }}
+        with:
+          projectPath: app
+          tagName: ${{ github.ref_name }}
+          releaseName: "melfield ${{ github.ref_name }}"
+          releaseBody: "See CHANGELOG.md."
+          releaseDraft: true
+          prerelease: false
+          updaterJsonPreferNsis: true
+          args: ${{ matrix.args }} ${{ runner.os == 'Windows' && '--config app/src-tauri/tauri.windows-sign.conf.json' || '' }}

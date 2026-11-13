@@ -1,0 +1,17 @@
+/target
+node_modules/
+dist/
+app/src-tauri/gen/
+app/src-tauri/binaries/*
+!app/src-tauri/binaries/.gitkeep
+*.log
+.DS_Store
+coverage/
+playwright-report/
+test-results/
+.env
+*.key
+binaries/uv-*
+release-local/
+
+trees.json

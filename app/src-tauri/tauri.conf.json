@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Melfield",
+  "version": "0.1.0",
+  "identifier": "app.melfield.desktop",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "melfield",
+        "width": 1280,
+        "height": 860,
+        "minWidth": 900,
+        "minHeight": 640,
+        "center": true,
+        "backgroundColor": "#050506",
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src ipc: http://ipc.localhost; script-src 'self'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis",
+      "msi",
+      "dmg",
+      "app",
+      "appimage",
+      "deb",
+      "rpm"
+    ],
+    "category": "Productivity",
+    "shortDescription": "Every voice. On your machine.",
+    "longDescription": "Studio-quality text-to-speech and voice cloning that runs entirely on your computer. Free, offline, no limits.",
+    "copyright": "© 2026 UnikAI Lab",
+    "license": "MIT",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": {
+      "../../workers/melfield_worker/*.py": "workers/melfield_worker/",
+      "../../workers/families/__init__.py": "workers/families/__init__.py",
+      "../../workers/families/chatterbox/*": "workers/families/chatterbox/",
+      "../../workers/families/qwen3/*": "workers/families/qwen3/",
+      "../../workers/families/pocket/*": "workers/families/pocket/",
+      "../../workers/families/parler/*": "workers/families/parler/",
+      "../../workers/families/voxcpm/*": "workers/families/voxcpm/",
+      "../../registry/samples/*.wav": "samples/",
+      "../../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md"
+    },
+    "externalBin": [
+      "binaries/uv"
+    ],
+    "createUpdaterArtifacts": true,
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "displayLanguageSelector": false
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "entitlements": "Entitlements.plist",
+      "hardenedRuntime": true
+    },
+    "linux": {
+      "deb": {
+        "depends": [
+          "libwebkit2gtk-4.1-0",
+          "libasound2"
+        ]
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    },
+    "publisher": "UnikAI Lab"
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDJFRjc5RDlBNjIzRjZFMDMKUldRRGJqOWltcDMzTGlnZklnVE90UVd2MkdoRXJKQXFyeGNlWm41ejV3Z3doMEozOEV3UWJNQzMK",
+      "endpoints": [
+        "https://github.com/tgakathunderr/melfield/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}

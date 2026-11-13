@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "download_bytes": 2987689053,
+  "disk_bytes": 2987689053,
+  "gate": null,
+  "g2p": {},
+  "notes_internal": "Reference must be longer than 5 s (assert upstream).",
+  "id": "chatterbox-turbo",
+  "display_name": "Chatterbox Turbo",
+  "engine": {
+    "kind": "python",
+    "family": "chatterbox",
+    "entry": "turbo",
+    "python": "3.11",
+    "lock": "chatterbox"
+  },
+  "artifacts": [
+    {
+      "source": "huggingface",
+      "repo": "ResembleAI/chatterbox-turbo",
+      "revision": "749d1c1a46eb10492095d68fbcf55691ccf137cd",
+      "gated": false,
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "size": 418,
+          "sha256": null
+        },
+        {
+          "path": "conds.pt",
+          "size": 169454,
+          "sha256": "b1852099306fd6a7814eb9d0bd10186caba7249596cc23868f78a0eefbfa5033"
+        },
+        {
+          "path": "merges.txt",
+          "size": 456318,
+          "sha256": null
+        },
+        {
+          "path": "s3gen_meanflow.safetensors",
+          "size": 1064875036,
+          "sha256": "d65cb687a2ed581ee6cc297e919ffefa63386944f42364ae13b78a594945514f"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "size": 470,
+          "sha256": null
+        },
+        {
+          "path": "t3_turbo_v1.safetensors",
+          "size": 1915480052,
+          "sha256": "fcf1f8c1d651bb7e3acd69ee5be269b4ac10c02980b7708213d598bc9f7cdf87"
+        },
+        {
+          "path": "t3_turbo_v1.yaml",
+          "size": 8457,
+          "sha256": null
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 3878,
+          "sha256": null
+        },
+        {
+          "path": "ve.safetensors",
+          "size": 5695784,
+          "sha256": "f0921cab452fa278bc25cd23ffd59d36f816d7dc5181dd1bef9751a7fb61f63c"
+        },
+        {
+          "path": "vocab.json",
+          "size": 999186,
+          "sha256": null
+        }
+      ]
+    }
+  ],
+  "license": {
+    "id": "MIT",
+    "url": "https://huggingface.co/ResembleAI/chatterbox",
+    "commercial": true,
+    "attribution": "Chatterbox by Resemble AI (MIT). Output carries a Perth watermark.",
+    "accept_required": false,
+    "personal_use": false,
+    "usage_policy": null
+  },
+  "capabilities": {
+    "clone": true,
+    "clone_ref_seconds": {
+      "min": 6,
+      "ideal": 10,
+      "max": 15
+    },
+    "clone_needs_transcript": false,
+    "voice_design": false,
+    "emotion": null,
+    "tags": [
+      "[laugh]",
+      "[chuckle]",
+      "[sigh]",
+      "[cough]",
+      "[gasp]",
+      "[groan]",
+      "[sniff]",
+      "[shush]",
+      "[clear throat]",
+      "[whispering]",
+      "[sarcastic]",
+      "[happy]",
+      "[crying]",
+      "[narration]",
+      "[dramatic]",
+      "[advertisement]",
+      "[surprised]",
+      "[fear]",
+      "[angry]"
+    ],
+    "speed": false,
+    "delivery": [],
+    "streaming": "chunk",
+    "max_chunk_chars": 300,
+    "builtin_watermark": "perth"
+  },
+  "languages": [
+    "en"
+  ],
+  "sample_rate": 24000,
+  "hardware": {
+    "devices": [
+      "cuda",
+      "mps",
+      "cpu"
+    ],
+    "min_ram_gb": 8,
+    "min_vram_gb": 4,
+    "os": [
+      "windows-x64",
+      "linux-x64",
+      "macos-arm64"
+    ],
+    "macos_min": "14.0",
+    "realtime_hint": {}
+  },
+  "tier": "advanced"
+}

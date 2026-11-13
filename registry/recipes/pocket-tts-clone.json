@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "download_bytes": 470015692,
+  "disk_bytes": 470015692,
+  "gate": {
+    "provider": "huggingface",
+    "repo": "kyutai/pocket-tts",
+    "url": "https://huggingface.co/kyutai/pocket-tts",
+    "form": "company + purpose; instant approval"
+  },
+  "g2p": {},
+  "notes_internal": "Other Pocket languages (fr de pt it es) are v1.1.",
+  "id": "pocket-tts-clone",
+  "display_name": "Pocket TTS cloning (English)",
+  "engine": {
+    "kind": "python",
+    "family": "pocket",
+    "entry": "english_clone",
+    "python": "3.12",
+    "lock": "pocket"
+  },
+  "artifacts": [
+    {
+      "source": "huggingface",
+      "repo": "kyutai/pocket-tts-without-voice-cloning",
+      "revision": "a7056f505a4a8ca72d8b5fb1440071d6f1a35739",
+      "gated": false,
+      "files": [
+        {
+          "path": "languages/english/embeddings/alba.safetensors",
+          "size": 6244152,
+          "sha256": "5850f417028fb2bf6de31e5e395e56ee7a21ac0e52ef31aebd4a6a2847d72e9c"
+        },
+        {
+          "path": "languages/english/embeddings/eve.safetensors",
+          "size": 6145848,
+          "sha256": "4444e6c2671a068ce385bba95fa6dd079e6432e51979ad1bfccd48d618363412"
+        },
+        {
+          "path": "languages/english/embeddings/george.safetensors",
+          "size": 5900088,
+          "sha256": "566330f66e20f95efd4fbea1e399e26dd84cf8e3ab1606e0114604e473dbc9fd"
+        },
+        {
+          "path": "languages/english/embeddings/jane.safetensors",
+          "size": 7325496,
+          "sha256": "f802b7b0ce91578dc5448e1cdf4827695e64a34cc6b2f95989dc335082522887"
+        },
+        {
+          "path": "languages/english/embeddings/jean.safetensors",
+          "size": 6096696,
+          "sha256": "61a8e5b72bdffc69d58b6dc070e0b2e46ad9fc70c420916ab19f40fe111287ec"
+        },
+        {
+          "path": "languages/english/model.safetensors",
+          "size": 219029196,
+          "sha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d"
+        }
+      ]
+    },
+    {
+      "source": "huggingface",
+      "repo": "kyutai/pocket-tts-without-voice-cloning",
+      "revision": "00eac05ed3d16bdc3f6b5d598874019c34a89214",
+      "gated": false,
+      "files": [
+        {
+          "path": "languages/english/tokenizer.json",
+          "size": 245020,
+          "sha256": null
+        }
+      ]
+    },
+    {
+      "source": "huggingface",
+      "repo": "kyutai/pocket-tts",
+      "revision": "db04f0e653473e5c7333c69686ac92b7460b0c1d",
+      "gated": true,
+      "files": [
+        {
+          "path": "languages/english/model.safetensors",
+          "size": 219029196,
+          "sha256": "****************************************************************"
+        }
+      ]
+    }
+  ],
+  "license": {
+    "id": "CC-BY-4.0",
+    "url": "https://huggingface.co/kyutai/pocket-tts",
+    "commercial": true,
+    "attribution": "Pocket TTS by Kyutai: weights CC BY 4.0, code MIT. Voice embeddings: see kyutai/tts-voices.",
+    "accept_required": false,
+    "personal_use": false,
+    "usage_policy": "Do not clone a voice without the speaker's consent."
+  },
+  "capabilities": {
+    "clone": true,
+    "clone_ref_seconds": {
+      "min": 3,
+      "ideal": 10,
+      "max": 30
+    },
+    "clone_needs_transcript": false,
+    "voice_design": false,
+    "emotion": null,
+    "tags": [],
+    "speed": false,
+    "delivery": [],
+    "streaming": "native",
+    "max_chunk_chars": 500,
+    "builtin_watermark": null
+  },
+  "languages": [
+    "en"
+  ],
+  "sample_rate": 24000,
+  "hardware": {
+    "devices": [
+      "cpu"
+    ],
+    "min_ram_gb": 4,
+    "min_vram_gb": null,
+    "os": [
+      "windows-x64",
+      "linux-x64",
+      "macos-arm64"
+    ],
+    "macos_min": "14.0",
+    "realtime_hint": {}
+  },
+  "tier": "standard"
+}

@@ -1,0 +1,41 @@
+/* Melfield design tokens: near-black, dot-matrix spectrogram, glass, iridescent primary actions. */
+:root {
+  --bg: #050506;
+  --surface-glass: rgba(14, 14, 16, 0.72);
+  --surface-pill: rgba(20, 20, 22, 0.6);
+  --surface-card: rgba(12, 12, 14, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-soft: rgba(255, 255, 255, 0.06);
+  --inset-glass: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  --text: #ededef;
+  --text-muted: #a1a1aa;
+  /* Lifted from #6E6E78 (4.0:1) to meet 4.5:1 on --bg. */
+  --text-faint: #8a8a94;
+  --text-dim: #7c7c86;
+
+  --orange: #ff6a2b;
+  --magenta: #e0389a;
+  --violet: #6b4bd8;
+  --cyan: #3fb6ff;
+  --green: #7cf29a;
+  --switch-on: #34c759;
+  --rec-red: #ff7a6b;
+
+  --iridescent: conic-gradient(from 210deg, #ff6a2b, #e0389a, #6b4bd8, #3fb6ff, #7cf29a, #ff6a2b);
+
+  --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-pill: 999px;
+  --radius-composer: 22px;
+  --radius-card: 20px;
+
+  --spring: cubic-bezier(0.3, 1.5, 0.6, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur: 300ms;
+
+  --focus: 0 0 0 2px var(--bg), 0 0 0 4px rgba(63, 182, 255, 0.85);
+}

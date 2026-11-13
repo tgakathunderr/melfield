@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "download_bytes": 3208951924,
+  "disk_bytes": 3208951924,
+  "gate": null,
+  "g2p": {},
+  "notes_internal": "Installed from git @ab55923c (PyPI 0.1.7 lacks v3). torch pin 2.6 lacks cu128; override tested in M4.",
+  "id": "chatterbox-multilingual-v3",
+  "display_name": "Chatterbox Multilingual v3",
+  "engine": {
+    "kind": "python",
+    "family": "chatterbox",
+    "entry": "multilingual_v3",
+    "python": "3.11",
+    "lock": "chatterbox"
+  },
+  "artifacts": [
+    {
+      "source": "huggingface",
+      "repo": "ResembleAI/chatterbox",
+      "revision": "5bb1f6ee58e50c3b8d408bc82a6d3740c2db6e18",
+      "gated": false,
+      "files": [
+        {
+          "path": "Cangjie5_TC.json",
+          "size": 1920163,
+          "sha256": null
+        },
+        {
+          "path": "conds.pt",
+          "size": 107374,
+          "sha256": "6552d70568833628ba019c6b03459e77fe71ca197d5c560cef9411bee9d87f4e"
+        },
+        {
+          "path": "grapheme_mtl_merged_expanded_v1.json",
+          "size": 69989,
+          "sha256": null
+        },
+        {
+          "path": "s3gen.pt",
+          "size": 1057165844,
+          "sha256": "9b9ff07e60b20c136e2b1b3d7563a24604e8d2c4c267888d1ee929dd0151d2a3"
+        },
+        {
+          "path": "t3_mtl23ls_v3.safetensors",
+          "size": 2143989928,
+          "sha256": "5abca8321ede76f8e61f1cc0d19aea6c946b28871017ce8726f8a69203f05953"
+        },
+        {
+          "path": "ve.pt",
+          "size": 5698626,
+          "sha256": "4b16d836bc598509860f6fa068165a8bb5e9ac84f05582dfcf278a5a372879f1"
+        }
+      ]
+    }
+  ],
+  "license": {
+    "id": "MIT",
+    "url": "https://huggingface.co/ResembleAI/chatterbox",
+    "commercial": true,
+    "attribution": "Chatterbox by Resemble AI (MIT). Output carries a Perth watermark.",
+    "accept_required": false,
+    "personal_use": false,
+    "usage_policy": null
+  },
+  "capabilities": {
+    "clone": true,
+    "clone_ref_seconds": {
+      "min": 5,
+      "ideal": 10,
+      "max": 30
+    },
+    "clone_needs_transcript": false,
+    "voice_design": false,
+    "emotion": "exaggeration",
+    "tags": [],
+    "speed": false,
+    "delivery": [
+      "calm",
+      "natural",
+      "expressive"
+    ],
+    "streaming": "chunk",
+    "max_chunk_chars": 300,
+    "builtin_watermark": "perth"
+  },
+  "languages": [
+    "ar",
+    "da",
+    "de",
+    "el",
+    "en",
+    "es",
+    "fi",
+    "fr",
+    "he",
+    "hi",
+    "it",
+    "ja",
+    "ko",
+    "ms",
+    "nl",
+    "no",
+    "pl",
+    "pt",
+    "ru",
+    "sv",
+    "sw",
+    "tr",
+    "zh"
+  ],
+  "sample_rate": 24000,
+  "hardware": {
+    "devices": [
+      "cuda",
+      "mps",
+      "cpu"
+    ],
+    "min_ram_gb": 8,
+    "min_vram_gb": 4,
+    "os": [
+      "windows-x64",
+      "linux-x64",
+      "macos-arm64"
+    ],
+    "macos_min": "14.0",
+    "realtime_hint": {}
+  },
+  "tier": "standard"
+}

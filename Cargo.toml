@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = ["crates/melfield-core", "crates/melfield-api", "crates/melfield-cli", "app/src-tauri"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/tgakathunderr/melfield"
+rust-version = "1.85"
+
+[profile.release]
+lto = "thin"
+codegen-units = 4
+strip = true
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.dev]
+debug = 0
+incremental = false

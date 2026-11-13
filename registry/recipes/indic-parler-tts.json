@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "download_bytes": 3766620054,
+  "disk_bytes": 3766620054,
+  "gate": {
+    "provider": "huggingface",
+    "repo": "ai4bharat/indic-parler-tts",
+    "url": "https://huggingface.co/ai4bharat/indic-parler-tts",
+    "form": "shares your hugging face username and email; instant approval"
+  },
+  "g2p": {},
+  "notes_internal": "kok mai sat sd ur have no named speakers: description-only voices. CPU/MPS speed unmeasured.",
+  "id": "indic-parler-tts",
+  "display_name": "Indic Parler-TTS",
+  "engine": {
+    "kind": "python",
+    "family": "parler",
+    "entry": "indic",
+    "python": "3.11",
+    "lock": "parler"
+  },
+  "artifacts": [
+    {
+      "source": "huggingface",
+      "repo": "ai4bharat/indic-parler-tts",
+      "revision": "660bc53c64ae83150613264111708a0465211237",
+      "gated": true,
+      "files": [
+        {
+          "path": "config.json",
+          "size": 7338,
+          "sha256": null
+        },
+        {
+          "path": "generation_config.json",
+          "size": 223,
+          "sha256": null
+        },
+        {
+          "path": "model.safetensors",
+          "size": 3751321772,
+          "sha256": "****************************************************************"
+        },
+        {
+          "path": "preprocessor_config.json",
+          "size": 206,
+          "sha256": null
+        },
+        {
+          "path": "special_tokens_map.json",
+          "size": 552,
+          "sha256": null
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 10272460,
+          "sha256": null
+        },
+        {
+          "path": "tokenizer.model",
+          "size": 1795391,
+          "sha256": "****************************************************************"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 990,
+          "sha256": null
+        }
+      ]
+    },
+    {
+      "source": "huggingface",
+      "repo": "google/flan-t5-large",
+      "revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+      "gated": false,
+      "files": [
+        {
+          "path": "config.json",
+          "size": 662,
+          "sha256": null
+        },
+        {
+          "path": "special_tokens_map.json",
+          "size": 2201,
+          "sha256": null
+        },
+        {
+          "path": "spiece.model",
+          "size": 791656,
+          "sha256": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86"
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 2424064,
+          "sha256": null
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 2539,
+          "sha256": null
+        }
+      ]
+    }
+  ],
+  "license": {
+    "id": "Apache-2.0",
+    "url": "https://huggingface.co/ai4bharat/indic-parler-tts",
+    "commercial": true,
+    "attribution": "Indic Parler-TTS by AI4Bharat & Hugging Face (Apache-2.0)",
+    "accept_required": false,
+    "personal_use": false,
+    "usage_policy": null
+  },
+  "capabilities": {
+    "clone": false,
+    "clone_ref_seconds": {
+      "min": 0,
+      "ideal": 0,
+      "max": 0
+    },
+    "clone_needs_transcript": false,
+    "voice_design": false,
+    "emotion": "description",
+    "tags": [],
+    "speed": false,
+    "delivery": [
+      "calm",
+      "natural",
+      "expressive"
+    ],
+    "streaming": "chunk",
+    "max_chunk_chars": 250,
+    "builtin_watermark": null
+  },
+  "languages": [
+    "as",
+    "bn",
+    "brx",
+    "doi",
+    "en",
+    "gu",
+    "hi",
+    "kn",
+    "kok",
+    "mai",
+    "ml",
+    "mni",
+    "mr",
+    "ne",
+    "or",
+    "sa",
+    "sat",
+    "sd",
+    "ta",
+    "te",
+    "ur"
+  ],
+  "sample_rate": 44100,
+  "hardware": {
+    "devices": [
+      "cuda",
+      "mps",
+      "cpu"
+    ],
+    "min_ram_gb": 8,
+    "min_vram_gb": 4,
+    "os": [
+      "windows-x64",
+      "linux-x64",
+      "macos-arm64"
+    ],
+    "macos_min": "14.0",
+    "realtime_hint": {}
+  },
+  "tier": "standard"
+}

@@ -1,0 +1,96 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  UV_VERSION: "0.13.7"
+
+jobs:
+  checks:
+    name: lint + unit (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, macos-13, ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: linux deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev libssl-dev libsecret-1-dev
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+
+      - name: registry is valid and up to date
+        run: python scripts/build_registry.py --check
+
+      - name: rust fmt
+        run: cargo fmt --all -- --check
+      - name: rust clippy
+        run: cargo clippy -p melfield-core -p melfield-api -p melfield-cli --all-targets -- -D warnings
+      - name: rust tests (core, api, cli)
+        run: cargo test -p melfield-core -p melfield-api -p melfield-cli
+      - name: native voice end-to-end (real Kokoro pull, ~142 MB)
+        env:
+          MELFIELD_NET_TESTS: "1"
+        run: cargo test -p melfield-core --test native_voice -- --nocapture
+
+      - name: worker protocol tests
+        run: uv run --no-project --with numpy --with pytest python -m pytest workers/tests -q
+
+      - name: ui install
+        working-directory: app
+        run: npm ci
+      - name: ui typecheck + unit
+        working-directory: app
+        run: |
+          npm run typecheck
+          npm test
+      - name: ui smoke (playwright, mock backend)
+        working-directory: app
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:ui
+
+      - name: fetch uv sidecar
+        shell: bash
+        run: scripts/fetch_uv.sh
+      - name: build app (unsigned)
+        working-directory: app
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then ARGS="--target aarch64-apple-darwin"; fi
+          if [ "${{ matrix.os }}" = "macos-13" ]; then ARGS="--target x86_64-apple-darwin"; fi
+          npx tauri build --debug --no-sign $ARGS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: melfield-${{ matrix.os }}
+          path: |
+            target/**/bundle/**/*.exe
+            target/**/bundle/**/*.msi
+            target/**/bundle/**/*.dmg
+            target/**/bundle/**/*.AppImage
+            target/**/bundle/**/*.deb
+            target/**/bundle/**/*.rpm
+          retention-days: 7
+          if-no-files-found: warn

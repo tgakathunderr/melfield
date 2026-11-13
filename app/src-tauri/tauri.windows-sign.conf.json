@@ -1,0 +1,7 @@
+{
+  "bundle": {
+    "windows": {
+      "signCommand": "artifact-signing-cli -e %AZURE_SIGNING_ENDPOINT% -a %AZURE_SIGNING_ACCOUNT% -c %AZURE_SIGNING_PROFILE% -d Melfield %1"
+    }
+  }
+}

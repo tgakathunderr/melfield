@@ -1,0 +1,6 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0
+parler-tts==0.2.3
+transformers==4.46.1
+sentencepiece>=0.2
+setuptools<81  # perth imports pkg_resources

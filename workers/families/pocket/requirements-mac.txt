@@ -1,0 +1,6 @@
+torch==2.8.0
+torchaudio==2.8.0
+pocket-tts==4.0.1
+resemble-perth==1.0.1
+setuptools<81  # perth imports pkg_resources
+librosa>=0.10  # perth imports it without declaring it
