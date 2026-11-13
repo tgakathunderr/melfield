@@ -3,7 +3,7 @@ name: release
 # Builds installers for every platform and attaches them to a draft GitHub
 # release, together with the signed updater manifest (latest.json).
 #
-# Required secret:
+# Recommended secret (without it, releases ship without auto-update files):
 #   TAURI_SIGNING_PRIVATE_KEY (+ TAURI_SIGNING_PRIVATE_KEY_PASSWORD) — updater signatures
 # Optional secrets (code signing; builds are unsigned without them):
 #   APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD, APPLE_SIGNING_IDENTITY,
@@ -43,6 +43,7 @@ jobs:
       HAS_APPLE_CERT: ${{ secrets.APPLE_CERTIFICATE != '' }}
       HAS_APPLE_NOTARY: ${{ secrets.APPLE_API_KEY != '' }}
       HAS_AZURE: ${{ secrets.AZURE_CLIENT_ID != '' }}
+      HAS_UPDATER_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
       - name: linux deps
@@ -101,6 +102,10 @@ jobs:
               echo "AZURE_SIGNING_PROFILE=${{ secrets.AZURE_SIGNING_PROFILE }}"
             } >> "$GITHUB_ENV"
             EXTRA="--config src-tauri/tauri.windows-sign.conf.json"
+          fi
+          if [ "$HAS_UPDATER_KEY" != "true" ]; then
+            # No updater key yet: still ship installers, just without update files.
+            EXTRA="$EXTRA --config src-tauri/tauri.no-updater.conf.json"
           fi
           echo "EXTRA_ARGS=$EXTRA" >> "$GITHUB_ENV"
 
