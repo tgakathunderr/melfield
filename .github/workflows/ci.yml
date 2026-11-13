@@ -32,6 +32,11 @@ jobs:
         with:
           components: clippy, rustfmt
       - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: v2-sherpa
+          # sherpa-onnx-sys keeps its downloaded native libs here; cache them
+          # with the build outputs or a warm cache links against a missing dir.
+          cache-directories: target/sherpa-onnx-prebuilt
       - uses: actions/setup-node@v4
         with:
           node-version: 22

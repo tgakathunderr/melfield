@@ -53,6 +53,11 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev libssl-dev libsecret-1-dev rpm
       - uses: dtolnay/rust-toolchain@1.95.0
       - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: v2-sherpa
+          # sherpa-onnx-sys keeps its downloaded native libs here; cache them
+          # with the build outputs or a warm cache links against a missing dir.
+          cache-directories: target/sherpa-onnx-prebuilt
       - uses: actions/setup-node@v4
         with:
           node-version: 22
