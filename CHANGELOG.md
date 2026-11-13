@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.1.0 — unreleased (development build)
+## 0.1.0 — 2026-11-13
+
+First public release.
 
 ### Added
 - Desktop app (Tauri 2 + React): first launch with dots-fill download, Studio, Voices, Clone, History, Settings — matching the approved design language.
@@ -14,6 +16,12 @@
 - History (replay, re-download, reopen, favourite, delete, search) and Settings (default voice, save format, compute, calmer visuals, storage usage + move, updates, logs export, Advanced: local API, engines, repair, credits).
 - Local OpenAI-compatible API (`/v1/audio/speech`, loopback only, off by default) and `melfield` CLI (`list`, `pull`, `say`, `serve`).
 - CI on Windows, macOS (arm64 + x64) and Linux; release workflow for signed installers and updater manifest.
+
+### Fixed before release
+- Opening the voice picker in Studio crashed the app.
+- Links and "open folder" buttons did nothing (opener permissions); they now go through the app core.
+- Hugging Face sign-in is a clear three-step guide that detects access by itself.
+- Saving a clip confirms with "show in folder"; real drag-and-drop on the Clone screen.
 
 ### Known gaps
 See README › Status for what is verified and what is still in progress.

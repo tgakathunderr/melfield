@@ -59,7 +59,7 @@ jobs:
           cache-dependency-path: app/package-lock.json
       - name: fetch uv sidecar
         shell: bash
-        run: scripts/fetch_uv.sh
+        run: bash scripts/fetch_uv.sh
       - name: install ui deps
         working-directory: app
         run: npm ci
