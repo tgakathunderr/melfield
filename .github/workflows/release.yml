@@ -1,86 +1,120 @@
 name: release
 
-# Signed, notarized installers + updater manifest. Triggered by a version tag.
-# Required repository secrets:
-#   TAURI_SIGNING_PRIVATE_KEY, TAURI_SIGNING_PRIVATE_KEY_PASSWORD   — updater signatures
+# Builds installers for every platform and attaches them to a draft GitHub
+# release, together with the signed updater manifest (latest.json).
+#
+# Required secret:
+#   TAURI_SIGNING_PRIVATE_KEY (+ TAURI_SIGNING_PRIVATE_KEY_PASSWORD) — updater signatures
+# Optional secrets (code signing; builds are unsigned without them):
 #   APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD, APPLE_SIGNING_IDENTITY,
 #   APPLE_API_ISSUER, APPLE_API_KEY, APPLE_API_KEY_P8                  — Developer ID + notarization
 #   AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET,
 #   AZURE_SIGNING_ENDPOINT, AZURE_SIGNING_ACCOUNT, AZURE_SIGNING_PROFILE — Windows Artifact Signing
-#   APPIMAGE_GPG_KEY, APPIMAGE_GPG_PASSPHRASE                         — AppImage signature
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   build:
+    name: build (${{ matrix.label }})
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: windows-latest
-            args: ""
+            label: windows x64
+            args: "--bundles nsis,msi"
           - os: macos-latest
-            args: "--target aarch64-apple-darwin"
-          - os: macos-13
-            args: "--target x86_64-apple-darwin"
+            label: macos arm64
+            args: "--target aarch64-apple-darwin --bundles app,dmg"
+          - os: macos-15-intel
+            label: macos x64
+            args: "--target x86_64-apple-darwin --bundles app,dmg"
           - os: ubuntu-22.04
-            args: ""
+            label: linux x64
+            args: "--bundles appimage,deb,rpm"
     runs-on: ${{ matrix.os }}
+    env:
+      HAS_APPLE_CERT: ${{ secrets.APPLE_CERTIFICATE != '' }}
+      HAS_APPLE_NOTARY: ${{ secrets.APPLE_API_KEY != '' }}
+      HAS_AZURE: ${{ secrets.AZURE_CLIENT_ID != '' }}
     steps:
       - uses: actions/checkout@v4
       - name: linux deps
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev libssl-dev libsecret-1-dev
-      - uses: dtolnay/rust-toolchain@stable
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev libssl-dev libsecret-1-dev rpm
+      - uses: dtolnay/rust-toolchain@1.95.0
       - uses: Swatinem/rust-cache@v2
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
       - name: fetch uv sidecar
         shell: bash
         run: scripts/fetch_uv.sh
       - name: install ui deps
         working-directory: app
         run: npm ci
-      - name: windows signing tool
-        if: runner.os == 'Windows'
-        run: cargo install artifact-signing-cli --locked
-      - name: apple api key file
-        if: runner.os == 'macOS'
+
+      # Only pass signing settings that actually exist, so unsigned builds still succeed.
+      - name: configure signing
         shell: bash
         run: |
-          mkdir -p ~/private_keys
-          echo "${{ secrets.APPLE_API_KEY_P8 }}" > ~/private_keys/AuthKey_${{ secrets.APPLE_API_KEY }}.p8
-          echo "APPLE_API_KEY_PATH=$HOME/private_keys/AuthKey_${{ secrets.APPLE_API_KEY }}.p8" >> $GITHUB_ENV
+          EXTRA=""
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            if [ "$HAS_APPLE_CERT" = "true" ]; then
+              {
+                echo "APPLE_CERTIFICATE=${{ secrets.APPLE_CERTIFICATE }}"
+                echo "APPLE_CERTIFICATE_PASSWORD=${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
+                echo "APPLE_SIGNING_IDENTITY=${{ secrets.APPLE_SIGNING_IDENTITY }}"
+              } >> "$GITHUB_ENV"
+              if [ "$HAS_APPLE_NOTARY" = "true" ]; then
+                mkdir -p ~/private_keys
+                printf '%s' "${{ secrets.APPLE_API_KEY_P8 }}" > ~/private_keys/AuthKey.p8
+                {
+                  echo "APPLE_API_ISSUER=${{ secrets.APPLE_API_ISSUER }}"
+                  echo "APPLE_API_KEY=${{ secrets.APPLE_API_KEY }}"
+                  echo "APPLE_API_KEY_PATH=$HOME/private_keys/AuthKey.p8"
+                } >> "$GITHUB_ENV"
+              fi
+            else
+              # Ad-hoc signature: required for Apple Silicon; Gatekeeper will still ask once.
+              echo "APPLE_SIGNING_IDENTITY=-" >> "$GITHUB_ENV"
+            fi
+          fi
+          if [ "$RUNNER_OS" = "Windows" ] && [ "$HAS_AZURE" = "true" ]; then
+            cargo install artifact-signing-cli --locked
+            {
+              echo "AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}"
+              echo "AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}"
+              echo "AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}"
+              echo "AZURE_SIGNING_ENDPOINT=${{ secrets.AZURE_SIGNING_ENDPOINT }}"
+              echo "AZURE_SIGNING_ACCOUNT=${{ secrets.AZURE_SIGNING_ACCOUNT }}"
+              echo "AZURE_SIGNING_PROFILE=${{ secrets.AZURE_SIGNING_PROFILE }}"
+            } >> "$GITHUB_ENV"
+            EXTRA="--config src-tauri/tauri.windows-sign.conf.json"
+          fi
+          echo "EXTRA_ARGS=$EXTRA" >> "$GITHUB_ENV"
+
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
-          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          SIGN: ${{ runner.os == 'Linux' && '1' || '' }}
-          SIGN_KEY: ${{ secrets.APPIMAGE_GPG_KEY }}
-          APPIMAGETOOL_SIGN_PASSPHRASE: ${{ secrets.APPIMAGE_GPG_PASSPHRASE }}
         with:
           projectPath: app
           tagName: ${{ github.ref_name }}
-          releaseName: "melfield ${{ github.ref_name }}"
-          releaseBody: "See CHANGELOG.md."
+          releaseName: "Melfield ${{ github.ref_name }}"
+          releaseBody: "See the release notes below and CHANGELOG.md."
           releaseDraft: true
           prerelease: false
           updaterJsonPreferNsis: true
-          args: ${{ matrix.args }} ${{ runner.os == 'Windows' && '--config app/src-tauri/tauri.windows-sign.conf.json' || '' }}
+          args: ${{ matrix.args }} ${{ env.EXTRA_ARGS }}

@@ -83,12 +83,16 @@
     "linux": {
       "deb": {
         "depends": [
-          "libwebkit2gtk-4.1-0",
-          "libasound2"
+          "libasound2t64 | libasound2"
         ]
       },
       "appimage": {
         "bundleMediaFramework": false
+      },
+      "rpm": {
+        "depends": [
+          "alsa-lib"
+        ]
       }
     },
     "publisher": "UnikAI Lab"
