@@ -2942,7 +2942,7 @@ dependencies = [
 
 [[package]]
 name = "melfield"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "melfield-api",
  "melfield-core",
@@ -2965,7 +2965,7 @@ dependencies = [
 
 [[package]]
 name = "melfield-api"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "axum",
  "melfield-core",
@@ -2980,7 +2980,7 @@ dependencies = [
 
 [[package]]
 name = "melfield-cli"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "clap",
  "melfield-api",
@@ -2991,7 +2991,7 @@ dependencies = [
 
 [[package]]
 name = "melfield-core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "axum",

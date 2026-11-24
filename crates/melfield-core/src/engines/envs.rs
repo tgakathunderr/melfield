@@ -224,7 +224,9 @@ impl EnvManager {
             .arg("-r")
             .arg(self.requirements(family, backend))
             // Packages come from PyPI and the PyTorch index; pick the best match across both.
-            .args(["--index-strategy", "unsafe-best-match"]);
+            .args(["--index-strategy", "unsafe-best-match"])
+            // Compile now: otherwise the first spoken line pays for it and looks frozen.
+            .arg("--compile-bytecode");
         let overrides = self
             .workers_dir
             .join("families")

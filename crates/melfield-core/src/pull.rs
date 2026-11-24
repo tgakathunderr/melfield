@@ -285,9 +285,9 @@ impl Puller {
         if have != file.size {
             return Err(download_failed().with_detail(format!("size {have} != {}", file.size)));
         }
-        if let Some(expected) = &file.sha256 {
+        if let Some(expected) = valid_sha(file) {
             let got = hex::encode(hasher.finalize());
-            if &got != expected {
+            if got != expected {
                 let _ = std::fs::remove_file(&part);
                 return Err(MelError::new(
                     ErrorCode::ChecksumMismatch,
@@ -306,16 +306,21 @@ impl Puller {
     }
 }
 
+/// Partial-download path. Named from a digest we compute ourselves, so nothing
+/// in a recipe can ever produce an invalid or unsafe file name.
 fn part_path(paths: &Paths, artifact: &Artifact, file: &ArtifactFile) -> PathBuf {
-    let key = file.sha256.clone().unwrap_or_else(|| {
-        hex::encode(Sha256::digest(format!(
-            "{}@{}/{}",
-            artifact.repo, artifact.revision, file.path
-        )))
-    });
-    paths
-        .tmp()
-        .join(format!("{}.part", &key[..32.min(key.len())]))
+    let key = hex::encode(Sha256::digest(format!(
+        "{}@{}/{}",
+        artifact.repo, artifact.revision, file.path
+    )));
+    paths.tmp().join(format!("{}.part", &key[..32]))
+}
+
+/// A usable sha256. Hugging Face masks hashes of gated files as asterisks.
+fn valid_sha(file: &ArtifactFile) -> Option<&str> {
+    file.sha256
+        .as_deref()
+        .filter(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
 }
 
 /// Feed an existing partial file into the hasher so resume keeps the checksum honest.
@@ -602,6 +607,26 @@ mod tests {
         assert_eq!(res.unwrap_err().code, ErrorCode::NeedsSignIn);
         let (res, _) = p.pull(&r, Some("hf_test")).await;
         res.unwrap();
+    }
+
+    #[tokio::test]
+    async fn masked_gated_checksum_still_downloads() {
+        let d = data();
+        let base = start(Server {
+            data: Arc::new(d.clone()),
+            hits: Default::default(),
+            cut_first_at: None,
+            require_token: true,
+        })
+        .await;
+        let (_t, paths) = setup();
+        let (r, a) = recipe_for(&base, &d, Some("*".repeat(64)), true);
+        let p = TestPuller(Puller::new(reqwest::Client::new(), paths.clone()));
+        p.pull(&r, Some("hf_test")).await.0.unwrap();
+        assert_eq!(
+            std::fs::read(file_path(&paths, &a, &a.files[0])).unwrap(),
+            d
+        );
     }
 
     #[test]

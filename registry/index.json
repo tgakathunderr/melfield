@@ -316,7 +316,7 @@
       {
        "path": "model.safetensors",
        "size": 3751321772,
-       "sha256": "****************************************************************"
+       "sha256": null
       },
       {
        "path": "preprocessor_config.json",
@@ -336,7 +336,7 @@
       {
        "path": "tokenizer.model",
        "size": 1795391,
-       "sha256": "****************************************************************"
+       "sha256": null
       },
       {
        "path": "tokenizer_config.json",
@@ -621,7 +621,7 @@
       {
        "path": "languages/english/model.safetensors",
        "size": 219029196,
-       "sha256": "****************************************************************"
+       "sha256": "bc96b82436c5ec00d3118ef3b01bc3358423e1766ecae3dca0aeea84789e7d74"
       }
      ]
     }

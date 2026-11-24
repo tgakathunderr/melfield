@@ -37,6 +37,10 @@ def load_recipes() -> list:
             for f in a["files"]:
                 if not isinstance(f.get("size"), int) or f["size"] <= 0:
                     fail(f"{r['id']}: {f['path']} needs a size")
+                # Hugging Face masks hashes of gated files as "****"; never accept those.
+                sha = f.get("sha256")
+                if sha is not None and not re.fullmatch(r"[0-9a-f]{64}", sha):
+                    fail(f"{r['id']}: {f['path']} has an invalid sha256")
         lic = r["license"]
         for key in ("id", "url", "commercial", "accept_required", "personal_use"):
             if key not in lic:

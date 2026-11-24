@@ -168,6 +168,14 @@ function ResultPill() {
   const job = useStore((s) => s.job);
   const lastJobId = useStore((s) => s.lastJobId);
   const [saving, setSaving] = useState(false);
+  const [slowStart, setSlowStart] = useState(false);
+  const waiting = job !== null && job.chunksDone === 0;
+  useEffect(() => {
+    setSlowStart(false);
+    if (!waiting) return;
+    const t = window.setTimeout(() => setSlowStart(true), 6000);
+    return () => window.clearTimeout(t);
+  }, [waiting, job?.id]);
   if (job) {
     const pct = job.chunksTotal > 0 ? job.chunksDone / job.chunksTotal : 0;
     return (
@@ -177,7 +185,7 @@ function ResultPill() {
         </button>
         <span className="working">
           <span className="pulse-dots" aria-hidden="true"><i /><i /><i /></span>
-          {job.chunksTotal > 1 ? `speaking · part ${Math.min(job.chunksDone + 1, job.chunksTotal)} of ${job.chunksTotal}` : "speaking…"}
+          {slowStart ? "waking this voice up · the first time can take a few minutes" : job.chunksTotal > 1 ? `speaking · part ${Math.min(job.chunksDone + 1, job.chunksTotal)} of ${job.chunksTotal}` : "speaking…"}
         </span>
         {job.chunksTotal > 1 && <span className="mini-bar" aria-hidden="true"><i style={{ width: `${pct * 100}%` }} /></span>}
       </div>

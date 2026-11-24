@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1 — 2026-11-24
+
+### Fixed
+- Voice cloning: the cloning engine could not be installed because a gated model's masked checksum was treated as real.
+- The same invalid checksum on Indic Parler-TTS (Hindi and other Indian voices).
+
+### Improved
+- Engines are precompiled during setup, and a slow first start says so instead of looking frozen.
+- The registry check rejects invalid checksums.
+
 ## 0.1.0 — 2026-11-13
 
 First public release.

@@ -39,7 +39,7 @@
         {
           "path": "model.safetensors",
           "size": 3751321772,
-          "sha256": "****************************************************************"
+          "sha256": null
         },
         {
           "path": "preprocessor_config.json",
@@ -59,7 +59,7 @@
         {
           "path": "tokenizer.model",
           "size": 1795391,
-          "sha256": "****************************************************************"
+          "sha256": null
         },
         {
           "path": "tokenizer_config.json",

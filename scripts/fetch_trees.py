@@ -1,4 +1,9 @@
 import json, sys, urllib.request, fnmatch
+def real_sha(oid):
+    """Hugging Face masks the hash of gated files ("****"); treat that as unknown."""
+    import re
+    return oid if oid and re.fullmatch(r"[0-9a-f]{64}", oid) else None
+
 repos = {
  "qwen3-0.6b-base": ("Qwen/Qwen3-TTS-12Hz-0.6B-Base", None),
  "qwen3-1.7b-base": ("Qwen/Qwen3-TTS-12Hz-1.7B-Base", None),
@@ -19,7 +24,7 @@ for k,(repo,allow) in repos.items():
         files = [t for t in tree if t["type"]=="file"]
         if allow: files=[f for f in files if f["path"] in allow]
         out[k] = {"repo":repo,"revision":sha,"gated":info.get("gated",False),
-                  "files":[{"path":f["path"],"size":f["size"],"sha256":(f.get("lfs") or {}).get("oid")} for f in files]}
+                  "files":[{"path":f["path"],"size":f["size"],"sha256":real_sha((f.get("lfs") or {}).get("oid"))} for f in files]}
     except Exception as e:
         out[k] = {"repo":repo,"error":str(e)}
 json.dump(out, open(sys.argv[1],"w"), indent=1)
